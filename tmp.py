@@ -1,49 +1,38 @@
 import cv2 as cv
 import numpy as np
+from matplotlib import pyplot as plt
 
-src = cv.imread("./test.png")
-cv.namedWindow("input", cv.WINDOW_AUTOSIZE)
-cv.imshow("input", src)
-h, w = src.shape[:2]
 
-# 获取ROI
-cy = h//2
-cx = w//2
-roi = src[cy-100:cy+100,cx-100:cx+100,:]
-cv.imshow("roi", roi)
+def back_projection_demo():
+    sample = cv.imread("./Mat.png")
+    # hist2d_demo(sample)
+    target = cv.imread("./test.png")
+    # hist2d_demo(target)
+    roi_hsv = cv.cvtColor(sample, cv.COLOR_BGR2HSV)
+    target_hsv = cv.cvtColor(target, cv.COLOR_BGR2HSV)
 
-# copy ROI
-image = np.copy(roi)
+    # show images
+    cv.imshow("sample", sample)
+    cv.imshow("target", target)
 
-# modify ROI
-roi[:, :, 0] = 0
-cv.imshow("result", src)
+    roiHist = cv.calcHist([roi_hsv], [0, 1], None, [32, 32], [0, 180, 0, 256])
+    cv.normalize(roiHist, roiHist, 0, 255, cv.NORM_MINMAX)
+    dst = cv.calcBackProject([target_hsv], [0, 1], roiHist, [0, 180, 0, 256], 1)
+    cv.imshow("backProjectionDemo", dst)
 
-# modify copy roi
-image[:, :, 2] = 0
-cv.imshow("result", src)
-cv.imshow("copy roi", image)
 
-# example with ROI - generate mask
-src2 = cv.imread("./test.png")
-cv.imshow("src2", src2)
-hsv = cv.cvtColor(src2, cv.COLOR_BGR2HSV)
-mask = cv.inRange(hsv, (35, 43, 46), (99, 255, 255))
+def hist2d_demo(image):
+    hsv = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+    hist = cv.calcHist([hsv], [0, 1], None, [32, 32], [0, 180, 0, 256])
+    dst = cv.resize(hist, (400, 400))
+    cv.imshow("image", image)
+    cv.imshow("hist", dst)
+    plt.imshow(hist, interpolation='nearest')
+    plt.title("2D Histogram")
+    plt.show()
 
-# extract person ROI
-mask = cv.bitwise_not(mask)
-person = cv.bitwise_and(src2, src2, mask=mask)
 
-# generate background
-result = np.zeros(src2.shape, src2.dtype)
-result[:,:,0] = 255
-
-# combine background + person
-mask = cv.bitwise_not(mask)
-dst = cv.bitwise_or(person, result, mask=mask)
-dst = cv.add(dst, person)
-
-cv.imshow("dst", dst)
-
+back_projection_demo()
 cv.waitKey(0)
+
 cv.destroyAllWindows()
