@@ -44,7 +44,7 @@ gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
 #cv.imshow("input",gray)
 
 #画原图直方图
-#image_hist(src)
+image_hist(src)
 custom_hist(gray)
 
 cv.waitKey(0)
