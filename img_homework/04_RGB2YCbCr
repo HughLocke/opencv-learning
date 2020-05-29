@@ -1,0 +1,22 @@
+import cv2 as cv
+import numpy as np
+
+src = cv.imread("01_实验测试图_汇总/04_彩色图像/Fig6.16(a).bmp")
+src = cv.cvtColor(src,cv.COLOR_BGR2RGB)
+ret = np.zeros(src.shape,src.dtype)
+
+n,m,ch = src.shape
+for i in range(n):
+    for j in range(m):
+        R = src[i,j,0]
+        G = src[i,j,1]
+        B = src[i,j,2]
+        Y = 0.257*R+0.564*G+0.098*B+16
+        U = -0.148*R-0.291*G+0.439*B+128
+        V = 0.439*R-0.368*G-0.071*B+128
+        ret[i,j] = [Y,U,V]
+#src = cv.cvtColor(src,cv.COLOR_RGB2YCrCb)
+cv.imshow("src",src)
+cv.imshow("ret",ret)
+cv.waitKey(0)
+cv.destroyAllWindows()
