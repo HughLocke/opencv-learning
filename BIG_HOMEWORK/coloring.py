@@ -15,12 +15,9 @@ def twoclassify(src):
             else: src[i,j] = 0
     return src
 
-def colorjn(src):
-    def findshell(src):
+def colorjn(src,CclK,EclK,BclK):
+    def findshell(src,CclK,EclK,BclK):
         n,m,ch = src.shape
-        CclK = [30, 60, 60, 120, 180, 220]
-        EclK = [80,200,200,255,200,255]
-        BclK = [180,250,180,240,140,185]
         Ac = [255,0,0]
         Bc = [0,255,0]
         Cc = [0,0,255]
@@ -47,12 +44,12 @@ def colorjn(src):
         src = normal.pengzhang(src,Cc, B)
 
         return src
-    src = findshell(src)
+    src = findshell(src,CclK,EclK,BclK)
     return src
 
-def classifyjn(src,threshold):
+def classifyjn(src,threshold,CclK,EclK,BclK):
     s = src.copy()
-    s = colorjn(s)
+    s = colorjn(s,CclK,EclK,BclK)
     src = findjn.findjn(s,src,threshold)
     return src
 

@@ -91,7 +91,7 @@ def findjn(s,jnsrc,threshold = 50):
     success,x,y,w,h = solve(n,m,presum,threshold)
     if success:
         cv.rectangle(jnsrc,(y,x),(y + w - 1,x + h - 1),[0,0,255],5)
-        jnsrc = cv.putText(jnsrc,"JNG",(y,x + h - 1),cv.FONT_HERSHEY_SIMPLEX,1.2,[255,255,255],2)
+        jnsrc = cv.putText(jnsrc,"Emoticons",(y,x + h - 1),cv.FONT_HERSHEY_SIMPLEX,1.2,[255,255,255],2)
     return jnsrc
 
 def main():

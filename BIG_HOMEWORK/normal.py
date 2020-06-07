@@ -77,3 +77,9 @@ def tianchong(src,x,y,c,b,B):
         ans = subc(ans,src,c,b)
     return subc(ans,src,c,c)
 
+
+if __name__ == '__main__':
+    s = cv.imread(f"img/pkq1.jpg")
+    cv.imshow("s",s)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
